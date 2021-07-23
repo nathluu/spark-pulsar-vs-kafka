@@ -6,6 +6,8 @@ docker run -it -p 6650:6650 -p 8080:8080 --name normal --mount source=pulsardata
 
 **Start multi-brokers pulsar cluster using cloud Kubernetes service**
 
+Deploy on Kubernetes
+
 ```bash
 helm repo add apache https://pulsar.apache.org/charts
 helm repo update
@@ -14,23 +16,23 @@ cd pulsar-helm-chart
 ./scripts/pulsar/prepare_helm_release.sh \
     --namespace pulsar \
     --release pulsar \
-    --create-namespace
+    --create-namespace \
     --symmetric
 cd ..
 git clone https://github.com/nathluu/spark-pulsar-vs-kafka.git
-cd pulsar
+cd spark-pulsar-vs-kafka
 helm install \
-    --values examples-pulsar-chart-values/values-jwt-multiple-brokers.yaml \
+    --values pulsar/examples-pulsar-chart-values/values-jwt-multiple-brokers.yaml \
     --set initialize=true \
     --namespace pulsar \
-    pulsar apache/pulsar:2.7.2
+    pulsar apache/pulsar
 ```
 
-Verify installed result
+Verify installed results
 
 ```bash
 kubectl get pods -n pulsar
 kubectl get services -n pulsar
-kubectl get secret pulsar-pulsar-token-admin -n pulsar -o jsonpath='{.data}'
+kubectl get secret pulsar-token-admin -n pulsar -o jsonpath='{.data}'
 ```
 
