@@ -8,9 +8,10 @@ name := "spark-pulsar-wcapp-jwt"
 
 version := "0.1"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.10"
 
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-sql" % "2.4.5" % "provided",
-  "io.streamnative.connectors" %% "pulsar-spark-connector" % "2.4.6-SNAPSHOT" % "provided"
+  "org.apache.spark" %% "spark-core" % "3.1.1" % "provided",
+  "org.apache.spark" %% "spark-sql" % "3.1.1" % "provided",
+  "io.streamnative.connectors" %% "pulsar-spark-connector" % "3.1.1.1" % "provided"
 )
