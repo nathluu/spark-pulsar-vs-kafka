@@ -29,8 +29,8 @@ broker:
 
 proxy:
   replicaCount: 2
-  #service:
-  #  type: ClusterIP
+  service:
+    type: ClusterIP
 
 #pulsar_manager:
   #service:

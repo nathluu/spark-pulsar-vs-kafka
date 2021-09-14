@@ -1,0 +1,62 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: ingressgateway-pulsar
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      creentialName: ca-key-pair
+    hosts:
+    - "pulsar-admin.tmanet.com"
+  - port:
+      number: 15443
+      name: tls
+      protocol: TLS
+    tls:
+      mode: SIMPLE
+      creentialName: ca-key-pair
+    hosts:
+    - "pulsar.tmanet.com"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: pulsar-admin-vs
+spec:
+  hosts:
+  - pulsar-admin.tmanet.com
+  gateways:
+  - ingressgateway-pulsar
+  http:
+  - match:
+    - port: 443
+    route:
+    - destination:
+        host: pulsar-proxy
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: pulsar-vs
+spec:
+  hosts:
+  - pulsar.tmanet.com
+  gateways:
+  - ingressgateway-pulsar
+  tcp:
+  - match:
+    - port: 15443
+    route:
+    - destination:
+        host: pulsar-proxy
+        port:
+          number: 6650
